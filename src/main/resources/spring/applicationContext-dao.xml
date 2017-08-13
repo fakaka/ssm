@@ -9,7 +9,7 @@
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
-        <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true"></property>
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
         <property name="user" value="root"></property>
         <property name="password" value="1223"></property>
         <!-- 每60秒检查所有连接池中的空闲连接。Default: 0 -->

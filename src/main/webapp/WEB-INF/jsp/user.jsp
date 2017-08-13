@@ -9,10 +9,11 @@
 
 </head>
 <body>
-	
-	<c:forEach var="user" items="${ users }">
+	list
+	<%=request.getAttribute("users")%>
+	<c:forEach var="user" items="${users}">
 		<ul>
-			<li>${user}</li>
+			<li>${user.name}</li>
 		</ul>
 	</c:forEach>
 
