@@ -2,4 +2,9 @@
 /.settings
 .classpath
 .project
-/.metadata/
+/.metadata
+/.recommenders
+
+*.jar
+*.war
+*.ear
