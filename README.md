@@ -1,2 +1,4 @@
-# ssm
-这是ssm框架的基本结构(maven版)
+# Template
+
+
+几个项目的基本结构

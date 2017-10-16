@@ -1,5 +1,4 @@
 # Spring、Spring MVC、MyBatis 整合文件配置详解
----
 
 SSM框架的项目的文件配置。
 
@@ -19,22 +18,24 @@ SSM框架的项目的文件配置。
         <!-- ContextconfigLocation配置springmvc加载的配置文件适配器、处理映射器等-->
         <param-name>contextConfigLocation</param-name>
         <param-value>WEB-INF/classes/spring/springmvc.xml</param-value>
-</init-param>
+    </init-param>
 </servlet>
 <servlet-mapping>
     <servlet-name>spring</servlet-name>
     <url-pattern>/</url-pattern>
 </servlet-mapping>
 <!--
-在<servlet-mapping>中url如果是.action，前端控制器就只会拦截以.action结尾的请求，并不会理会静态的文件。对静态页面的控制就要通过其他的手段。以/作为url的话就会拦截所有的请求，包括静态页面的请求。这样的话就可以拦截任何想要处理的请求，但是有一个问题。如果拦截了所有的请求，如果不在拦截器中做出相应的处理那么所有静态的js、css以及页面中用到的图片就会访问不到造成页面无法正常显示。但这可以通过静态资源的配置来解决这个问题。后面会提到。
+在<servlet-mapping>中url如果是.action，前端控制器就只会拦截以.action结尾的请求，并不会理会静态的文件。
+对静态页面的控制就要通过其他的手段。以/作为url的话就会拦截所有的请求，包括静态页面的请求。
+这样的话就可以拦截任何想要处理的请求，但是有一个问题。如果拦截了所有的请求，
+如果不在拦截器中做出相应的处理那么所有静态的js、css以及页面中用到的图片就会访问不到造成页面无法正常显示。
+但这可以通过静态资源的配置来解决这个问题。后面会提到。
 -->
 
-配置spring容器：
 <!-- 其中applicationContext-*.xml包含3个配置文件，是springIoC容器的具体配置。后面会提到。-->
 <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>WEB-INF/classes/spring/applicationContext-*.xml</param-value>
-
+    <param-name>contextConfigLocation</param-name>
+    <param-value>WEB-INF/classes/spring/applicationContext-*.xml</param-value>
 </context-param>
 
 <listener>
@@ -44,7 +45,7 @@ SSM框架的项目的文件配置。
 
 ## springmvc.xml的配置
 
-### 视图解析器的配置：
+### 1. 视图解析器的配置：
 在Controller中设置视图名的时候会自动加上前缀和后缀。
 ``` xml
 <!-- 配置视图解析器 -->
@@ -55,11 +56,11 @@ SSM框架的项目的文件配置。
         <property name="suffix" value=".jsp"></property>
 </bean>
 ```
-### Controller的配置
+### 2. Controller的配置
 
 ``` xml
 <!-- 使用组件扫描的方式可以一次扫描多个Controller -->
-<context:component-scan base-package="com.wxisme.ssm.controller">
+<context:component-scan base-package="com.lyt.ssm.controller">
 
 <!-- 配置注解的处理器映射器和处理器适配器 -->
 <mvc:annotation-driven />
@@ -80,12 +81,11 @@ SSM框架的项目的文件配置。
 
 applicationContext-*.xml包括三个配置文件，分别对应数据层控制、业务逻辑service控制和事务的控制。
 
-### 数据访问层的控制，applicationContext-dao.xml的配置：
+### 1. 数据访问层的控制，applicationContext-dao.xml的配置：
 
 ``` xml
 <!-- 加载数据库连接的资源文件 -->
 <context:property-placeholder location="classpath:jdbc.properties"/>
-
 
 <!-- 配置数据源   dbcp数据库连接池 -->
 <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
@@ -101,7 +101,7 @@ applicationContext-*.xml包括三个配置文件，分别对应数据层控制�
 jdbc.driver=com.mysql.jdbc.Driver
 jdbc.url=jdbc:mysql://localhost:3306/database
 jdbc.username=root
-jdbc.password=1234
+jdbc.password=root
 ```
 配置sqlSessionFactory
 
@@ -113,7 +113,7 @@ jdbc.password=1234
     <!-- 扫描mybatis核心配置文件 -->
     <property name="configLocation" value="classpath:mybatis.xml"/>
     <!-- 扫描java bean，自动使用别名 -->
-    <property name="typeAliasesPackage" value="com.lyt48.ssm.bean"/>
+    <property name="typeAliasesPackage" value="com.lyt.ssm.bean"/>
     <!-- 扫描mybatis的SQL配置文件 -->
     <property name="mapperLocations" value="classpath:mapper/*.xml"/>
 </bean>
@@ -125,15 +125,15 @@ jdbc.password=1234
 <!-- 扫描Dao接口包 -->
 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
     <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-    <property name="basePackage" value="com.lyt48.ssm.dao"/>
+    <property name="basePackage" value="com.lyt.ssm.dao"/>
 </bean>
 ```
 
-### 业务逻辑控制，applicationContext-service.xml的配置
+### 2.业务逻辑控制，applicationContext-service.xml的配置
 
 ``` xml
 <!-- 扫描service包 -->
-<context:component-scan base-package="com.lyt48.ssm.service" />
+<context:component-scan base-package="com.lyt.ssm.service" />
 
 <!-- 配置事务管理器 -->
 <bean id="transactionManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
